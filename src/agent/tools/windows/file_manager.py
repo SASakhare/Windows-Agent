@@ -4,9 +4,10 @@ import os
 import shutil
 from pathlib import Path
 from typing import Any, Dict, List
+from base_tool import BaseTool
 
 
-class FileManager:
+class FileManager(BaseTool):
     """Tools for managing local files and directories.
 
     All paths may be absolute or relative to the current working directory.
@@ -15,6 +16,57 @@ class FileManager:
     def __init__(self) -> None:
         """Initialize the file manager."""
         pass
+
+    
+    @property
+    def name(self):
+        return "file"
+    
+    @property
+    def description(self):
+        return "Manage files and directories"
+        
+    def execute(self, action: str, **kwargs):
+
+        actions = {
+
+            "create_file": self.create_file,
+
+            "read_file": self.read_file,
+
+            "write_file": self.write_file,
+
+            "append_file": self.append_file,
+
+            "delete_file": self.delete_file,
+
+            "create_directory": self.create_directory,
+
+            "delete_directory": self.delete_directory,
+
+            "move": self.move,
+
+            "copy": self.copy,
+
+            "rename": self.rename,
+
+            "exists": self.exists,
+
+            "list_directories": self.list_directories,
+
+            "search": self.search,
+
+            "metadata": self.get_metadata,
+
+            "open_file": self.open_file,
+
+            "open_directory": self.open_directory,
+        }
+
+        if action not in actions:
+            raise ValueError(f"Unknown action: {action}")
+
+        return actions[action](**kwargs)
 
     #^ ==========================================================
     #^ 1) File Related Tools

@@ -1,0 +1,141 @@
+{'tool': 'FileManager',
+ 'description': 'Tools for managing local files and directories.\n\nAll paths may be absolute or relative to the current working directory.',
+ 'actions': [
+        {'name': 'append_file',
+   'description': 'Append data to a file.\n\nCreates the file if it does not exist.\n\nArgs:\n    file_name: File path.\n    content: Text (str) or binary (bytes) data.\n\nReturns:\n    Status message.',
+   'parameters': {'file_name': {'type': 'str',
+     'required': True,
+     'default': None
+                },
+    'content': {'type': 'Any', 'required': True, 'default': None
+                }
+            },
+   'returns': 'str'
+        },
+        {'name': 'copy',
+   'description': 'Copy a file or directory.\n\nDirectories are copied recursively.\n\nArgs:\n    source: Existing file or directory.\n    destination: Destination path.\n\nReturns:\n    Status message.',
+   'parameters': {'source': {'type': 'str', 'required': True, 'default': None
+                },
+    'destination': {'type': 'str', 'required': True, 'default': None
+                }
+            },
+   'returns': 'str'
+        },
+        {'name': 'create_directory',
+   'description': 'Create a directory.\n\nParent directories are created automatically.\n\nArgs:\n    path: Parent directory.\n    name: Name of the new directory.\n\nReturns:\n    Status message.',
+   'parameters': {'path': {'type': 'str', 'required': True, 'default': None
+                },
+    'name': {'type': 'str', 'required': True, 'default': None
+                }
+            },
+   'returns': 'str'
+        },
+        {'name': 'create_file',
+   'description': 'Create an empty file.\n\nParent directories are created automatically.\n\nArgs:\n    file_name: File path to create.\n\nReturns:\n    Status message.',
+   'parameters': {'file_name': {'type': 'str',
+     'required': True,
+     'default': None
+                }
+            },
+   'returns': 'str'
+        },
+        {'name': 'delete_directory',
+   'description': 'Delete a directory recursively.\n\nArgs:\n    path: Directory path.\n\nReturns:\n    Status message.',
+   'parameters': {'path': {'type': 'str', 'required': True, 'default': None
+                }
+            },
+   'returns': 'str'
+        },
+        {'name': 'delete_file',
+   'description': 'Delete a file.\n\nArgs:\n    file_name: File path.\n\nReturns:\n    Status message.',
+   'parameters': {'file_name': {'type': 'str',
+     'required': True,
+     'default': None
+                }
+            },
+   'returns': 'str'
+        },
+        {'name': 'exists',
+   'description': 'Check whether a file or directory exists.\n\nArgs:\n    path: File or directory path.\n\nReturns:\n    True if the path exists, otherwise False.',
+   'parameters': {'path': {'type': 'str', 'required': True, 'default': None
+                }
+            },
+   'returns': 'bool'
+        },
+        {'name': 'get_metadata',
+   'description': 'Get filesystem metadata.\n\nArgs:\n    path: File or directory path.\n\nReturns:\n    Dictionary containing metadata.',
+   'parameters': {'path': {'type': 'str', 'required': True, 'default': None
+                }
+            },
+   'returns': 'Dict'
+        },
+        {'name': 'list_directories',
+   'description': 'List immediate subdirectories.\n\nArgs:\n    path: Parent directory.\n\nReturns:\n    List of directory paths.',
+   'parameters': {'path': {'type': 'str', 'required': True, 'default': None
+                }
+            },
+   'returns': 'List'
+        },
+        {'name': 'move',
+   'description': 'Move a file or directory.\n\nArgs:\n    source: Existing file or directory.\n    destination: Destination path.\n\nReturns:\n    Status message.',
+   'parameters': {'source': {'type': 'str', 'required': True, 'default': None
+                },
+    'destination': {'type': 'str', 'required': True, 'default': None
+                }
+            },
+   'returns': 'str'
+        },
+        {'name': 'open_directory',
+   'description': 'Open a directory in the system file explorer.\n\nArgs:\n    path: Directory path.\n\nReturns:\n    Status message.',
+   'parameters': {'path': {'type': 'str', 'required': True, 'default': None
+                }
+            },
+   'returns': 'str'
+        },
+        {'name': 'open_file',
+   'description': "Open a file using the system's default application.\n\nArgs:\n    path: File path.\n\nReturns:\n    Status message.",
+   'parameters': {'path': {'type': 'str', 'required': True, 'default': None
+                }
+            },
+   'returns': 'str'
+        },
+        {'name': 'read_file',
+   'description': 'Read a file.\n\nReturns text for UTF-8 files, otherwise returns raw bytes.\n\nArgs:\n    file_name: File path.\n\nReturns:\n    str | bytes: File contents.',
+   'parameters': {'file_name': {'type': 'str',
+     'required': True,
+     'default': None
+                }
+            },
+   'returns': 'None'
+        },
+        {'name': 'rename',
+   'description': 'Rename a file or directory.\n\nArgs:\n    path: Existing file or directory.\n    new_name: New name only.\n\nReturns:\n    Status message.',
+   'parameters': {'path': {'type': 'str', 'required': True, 'default': None
+                },
+    'new_name': {'type': 'str', 'required': True, 'default': None
+                }
+            },
+   'returns': 'str'
+        },
+        {'name': 'search',
+   'description': 'Recursively search using a glob pattern.\n\nExamples:\n    *.py\n    *.txt\n    *\n\nArgs:\n    path: Root directory.\n    pattern: Glob pattern.\n\nReturns:\n    List of matching paths.',
+   'parameters': {'path': {'type': 'str', 'required': True, 'default': None
+                },
+    'pattern': {'type': 'str', 'required': False, 'default': '*'
+                }
+            },
+   'returns': 'List'
+        },
+        {'name': 'write_file',
+   'description': 'Overwrite a file.\n\nCreates the file if it does not exist.\n\nArgs:\n    file_name: Destination file path.\n    content: Text (str) or binary (bytes) data.\n\nReturns:\n    Status message.',
+   'parameters': {'file_name': {'type': 'str',
+     'required': True,
+     'default': None
+                },
+    'content': {'type': 'Any', 'required': True, 'default': None
+                }
+            },
+   'returns': 'str'
+        }
+    ]
+}
