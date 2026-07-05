@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "comtypes>=1.4.16",
+    "playwright>=1.61.0",
     "pycaw>=20251023",
     "pygetwindow>=0.0.9",
     "pyperclip>=1.11.0",
