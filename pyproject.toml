@@ -12,4 +12,5 @@ dependencies = [
     "pywin32>=312",
     "screen-brightness-control>=0.27.2",
     "screeninfo>=0.8.1",
+    "winshell>=0.6",
 ]
