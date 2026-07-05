@@ -10,6 +10,7 @@ dependencies = [
     "pycaw>=20251023",
     "pygetwindow>=0.0.9",
     "pyperclip>=1.11.0",
+    "pyttsx3>=2.99",
     "pywin32>=312",
     "screen-brightness-control>=0.27.2",
     "screeninfo>=0.8.1",
