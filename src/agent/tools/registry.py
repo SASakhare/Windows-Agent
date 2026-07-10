@@ -1,5 +1,6 @@
 from src.agent.tools.base_tool import BaseTool
 from src.agent.tools.schema_generator import build_tool_schema
+from src.agent.tools.tool_result import ToolResult
 
 
 class ToolRegistry:
@@ -11,7 +12,7 @@ class ToolRegistry:
 
     def register(self, tool_class: type[BaseTool]) -> None:
 
-        if not issubclass(tool_class,BaseTool):
+        if not issubclass(tool_class, BaseTool):
             raise TypeError(...)
 
         instance = tool_class()
@@ -54,8 +55,22 @@ class ToolRegistry:
 
         try:
             tool_instance = self.__tools[tool_name]
-        except Exception as e:
-            raise RuntimeError(
-                f"Error executing '{action}' on tool '{tool_name}' :{e}"
+            
+            output = tool_instance.execute(action, **kwargs)
+
+            return ToolResult(
+                success=True,
+                tool=tool_name,
+                action=action,
+                result=output,
+                error=None,
             )
-        return tool_instance.execute(action, **kwargs)
+        except Exception as e:
+
+            return ToolResult(
+                success=False,
+                tool=tool_name,
+                action=action,
+                error=str(e),
+                result=None,
+            )

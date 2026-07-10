@@ -10,4 +10,3 @@ class ToolResult:
     action: str
     result: Any
     error: str | None
-    metadata: Any

@@ -47,7 +47,7 @@ if __name__=="__main__":
     toolRegister.register(FileManagerTool)
 
     # print(toolRegister.get_schema(BrowserTool().name))
-    print(toolRegister.get_all_schemas())
+    # print(toolRegister.get_all_schemas())
     result = toolRegister.execute(
         tool_name="file",
         action="create_file",
