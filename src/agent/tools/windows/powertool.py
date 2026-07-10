@@ -6,7 +6,7 @@ from typing import Any, Dict
 
 import psutil
 
-from base_tool import BaseTool
+from src.agent.tools.base_tool import BaseTool
 
 
 class PowerTool(BaseTool):

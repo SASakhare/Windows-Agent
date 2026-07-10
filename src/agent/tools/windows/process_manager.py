@@ -4,11 +4,11 @@ import subprocess
 import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional
-from base_tool import BaseTool
 import psutil
+from src.agent.tools.base_tool import BaseTool
 
 
-class ProcessManager(BaseTool):
+class ProcessManagerTool(BaseTool):
     """Tools for managing operating system processes.
 
     Every lookup/control method accepts either `pid` or `name` (never both).

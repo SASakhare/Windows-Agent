@@ -4,7 +4,7 @@ import pyperclip
 from pathlib import Path
 from typing import Any
 
-from base_tool import BaseTool
+from src.agent.tools.base_tool import BaseTool
 
 
 class ClipboardTool(BaseTool):

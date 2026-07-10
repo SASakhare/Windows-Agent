@@ -9,7 +9,7 @@ import screen_brightness_control as sbc
 from screeninfo import get_monitors
 from typing import Any, Dict, List
 
-from base_tool import BaseTool
+from src.agent.tools.base_tool import BaseTool
 
 
 class DisplayTool(BaseTool):

@@ -4,10 +4,10 @@ import os
 import shutil
 from pathlib import Path
 from typing import Any, Dict, List
-from base_tool import BaseTool
+from src.agent.tools.base_tool import BaseTool
 
 
-class FileManager(BaseTool):
+class FileManagerTool(BaseTool):
     """Tools for managing local files and directories.
 
     All paths may be absolute or relative to the current working directory.

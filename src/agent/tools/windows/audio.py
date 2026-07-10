@@ -5,7 +5,7 @@ from typing import Any, List
 from comtypes import CLSCTX_ALL
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 
-from base_tool import BaseTool
+from src.agent.tools.base_tool import BaseTool
 
 
 class AudioTool(BaseTool):
