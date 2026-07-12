@@ -165,43 +165,44 @@ class ConversationManager(EventHandler):
 
         print(f"[Speech] {message}")
 
-    def pause_for_user(self) -> None:
-        """
+    
+    def pause_for_user(self)->None:
+        '''
         Pause execution until the user responds.
-        """
-        self._state.conversation.waiting_for_user = True
+        '''
+        self._state.conversation.waiting_for_user=True
 
     def resume(self) -> None:
         """
         Resume execution.
-        """
+        """ 
 
-        self._state.conversation.waiting_for_user = False
+        self._state.conversation.waiting_for_user=False
 
     # ^ ==========================
     # ^ Event Handling
     # ^ ==========================
 
-    def on_ask_user(self, event: Event):
-
+    def on_ask_user(self,event:Event):
+        
         self.ask_question(event.payload)
 
-    def on_agent_message(self, event: Event) -> None:
-
+    def on_agent_message(self,event: Event)->None:
+        
         self.send_message(event.payload)
 
-    def on_confirmation_required(self, event: Event) -> None:
+    def on_confirmation_required(self,event: Event) -> None:
 
         self.request_confirmation(event.payload)
 
-    def on_goal_completed(self, event: Event) -> None:
-
+    def on_goal_completed(self,event: Event)->None:
+        
         self.notify("Task Completed successfully.")
 
-    def on_goal_failed(self, event: Event) -> None:
-
+    def on_goal_failed(self,event: Event)->None:
+        
         self.notify("Task Failed")
 
-    def on_ask_human(self, event: Event) -> None:
-
+    def on_ask_human(self,event: Event)->None:
+        
         self.ask_question(event.payload)
