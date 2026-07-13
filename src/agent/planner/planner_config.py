@@ -1,11 +1,14 @@
 from dataclasses import dataclass
 
 
-@dataclass
+@dataclass(slots=True)
 class PlannerConfig:
+    """
+    Configuration for the planner.
+    """
 
-    model: str = "gpt-5.5"
+    max_retries: int = 3
 
-    temperature: float = 0.2
+    validate_actions: bool = True
 
-    max_tokens: int = 500
+    publish_events: bool = True
