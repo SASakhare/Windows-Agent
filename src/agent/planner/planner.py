@@ -5,6 +5,11 @@ from src.agent.llm.base_llm import BaseLLM
 from src.agent.planner.action_validator import ActionValidator
 from src.agent.planner.planner_output import PlannerOutput
 from src.agent.planner.planner_prompt import PlannerPrompt
+from src.agent.prompts.builder.planner_prompt_builder import PlannerPromptBuilder
+from src.agent.prompts.formatter.conversation_formatter import ConversationFormatter
+from src.agent.prompts.formatter.planning_formatter import PlanningFormatter
+from src.agent.prompts.formatter.tool_formatter import ToolFormatter
+from src.agent.prompts.formatter.word_formatter import WorldFormatter
 from src.agent.state.agent_state import AgentState
 from src.agent.tools.registry import ToolRegistry
 
@@ -36,7 +41,12 @@ class Planner:
 
         self._event_bus = event_bus
 
-        self._prompt_builder = PlannerPrompt()
+        self._prompt_builder = PlannerPromptBuilder(
+            tool_formatter=ToolFormatter(),
+            conversation_formatter=ConversationFormatter(),
+            planning_formatter=PlanningFormatter(),
+            world_formatter=WorldFormatter(),
+        )
 
         self._validator = ActionValidator(tool_registry)
 
@@ -50,13 +60,16 @@ class Planner:
         """
 
         prompt = self._build_prompt()
-        print("**"*50)
-        print("Prompt :")
-        print(prompt)
-        print("**"*50)
+
         result = self._call_llm(prompt)
 
         # self._validate(result)
+        # with open('prompt_file_from_planner.txt','w',encoding='utf-8') as file:
+        #     file.write(prompt)
+            
+
+        # print("Prompt file Saving Completed.")
+
 
         self._update_state(result)
 
@@ -71,8 +84,8 @@ class Planner:
     def _build_prompt(self) -> str:
 
         return self._prompt_builder.build(
-            self._state,
-            self._tool_registry.get_all_schemas(),
+            state=self._state,
+            tool_registry=self._tool_registry,
         )
 
     def _call_llm(self, prompt: str) -> PlannerOutput:
@@ -90,7 +103,7 @@ class Planner:
         if result.goal_completed:
             return
 
-        self._validator.validate(result.action)  
+        self._validator.validate(result.action)
 
     def _update_state(
         self,

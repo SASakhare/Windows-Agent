@@ -432,657 +432,174 @@ Only use the tools listed below.
 Each tool contains its purpose, available actions,
 and required arguments.
 
-======================================================================
-Tool : browser
-======================================================================
+============================================================
+TOOL: browser
+============================================================
 
-Purpose
--------
-Control a web browser: navigate, click, type, search, read page state.
-
-Internally delegates to BrowserManager, Navigation, Interaction, Page,
-and Tabs, but every action below is exposed directly on this class so
-it can be introspected and turned into a schema automatically.
+Purpose: Control a web browser: navigate, click, type, search, read page state.
 
 Available Actions
 -----------------
 • back(tab_id)
-    Description : Go back one page in browser history.
-
-Args:
-    tab_id: Target a specific tab instead of the active one.
-
-Returns:
-    Dictionary with success, url, and title after navigation.
-    Required Arguments:
-      • tab_id : Optional [Optional]
+  Go back one page in browser history.
 
 • click_button(name, tab_id)
-    Description : Click a button identified by its visible/accessible name.
-Use the button's visible text, not a CSS selector, e.g.
-click_button(name="Login").
-
-Args:
-    name: Visible name/text of the button.
-    tab_id: Target a specific tab instead of the active one.
-
-Returns:
-    Dictionary with success, url, and title after the click.
-    Required Arguments:
-      • name : str [Required]
-      • tab_id : Optional [Optional]
+  Click a button identified by its visible/accessible name.
 
 • click_link(name, tab_id)
-    Description : Click a link identified by its visible text.
-
-Args:
-    name: Visible text of the link.
-    tab_id: Target a specific tab instead of the active one.
-
-Returns:
-    Dictionary with success, url, and title after the click.
-    Required Arguments:
-      • name : str [Required]
-      • tab_id : Optional [Optional]
+  Click a link identified by its visible text.
 
 • close()
-    Description : Close the browser and end the session.
-
-Returns:
-    Status message.
-    Required Arguments : None
+  Close the browser and end the session.
 
 • close_tab(tab_id)
-    Description : Close a tab by its tab_id.
-
-Args:
-    tab_id: The tab to close.
-
-Returns:
-    Status message.
-    Required Arguments:
-      • tab_id : str [Required]
+  Close a tab by its tab_id.
 
 • fill_textbox(name, text, tab_id)
-    Description : Type text into an input field identified by its label or
-placeholder, e.g. fill_textbox(name="Username", text="sejal").
-
-Args:
-    name: Label/placeholder of the textbox.
-    text: Text to type into it.
-    tab_id: Target a specific tab instead of the active one.
-
-Returns:
-    Dictionary with success, url, and title after filling.
-    Required Arguments:
-      • name : str [Required]
-      • text : str [Required]
-      • tab_id : Optional [Optional]
+  Type text into an input field identified by its label or
 
 • forward(tab_id)
-    Description : Go forward one page in browser history.
-
-Args:
-    tab_id: Target a specific tab instead of the active one.
-
-Returns:
-    Dictionary with success, url, and title after navigation.
-    Required Arguments:
-      • tab_id : Optional [Optional]
+  Go forward one page in browser history.
 
 • goto(url, tab_id)
-    Description : Navigate the active (or specified) tab to a URL.
-
-Args:
-    url: The URL to navigate to.
-    tab_id: Target a specific tab instead of the active one.
-
-Returns:
-    Dictionary with success, url, and title after navigation.
-    Required Arguments:
-      • url : str [Required]
-      • tab_id : Optional [Optional]
+  Navigate the active (or specified) tab to a URL.
 
 • html(tab_id)
-    Description : Get raw HTML of the page. Expensive - only use if
-page_state() doesn't have enough info to find an element.
-
-Args:
-    tab_id: Target a specific tab instead of the active one.
-
-Returns:
-    Raw HTML string.
-    Required Arguments:
-      • tab_id : Optional [Optional]
+  Get raw HTML of the page. Expensive - only use if
 
 • launch(headless)
-    Description : Launch the browser. Called automatically by other actions if
-the browser isn't open yet; rarely needs to be called directly.
-
-Args:
-    headless: Run without a visible window.
-
-Returns:
-    Status message.
-    Required Arguments:
-      • headless : bool [Optional] (default=False)
+  Launch the browser. Called automatically by other actions if
 
 • list_tabs()
-    Description : List all open tabs with their tab_id, url, and title.
-
-Returns:
-    List of dictionaries, one per open tab.
-    Required Arguments : None
+  List all open tabs with their tab_id, url, and title.
 
 • new_tab(url, make_active)
-    Description : Open a new browser tab, optionally navigating to a URL.
-Returns a tab_id that can be passed to other actions to target
-this tab directly without switching.
-
-Args:
-    url: URL to load in the new tab.
-    make_active: Whether to make this the active tab.
-
-Returns:
-    Dictionary with success, tab_id, and url.
-    Required Arguments:
-      • url : str [Optional] (default=about:blank)
-      • make_active : bool [Optional] (default=True)
+  Open a new browser tab, optionally navigating to a URL.
 
 • page_state(tab_id)
-    Description : Get a compact snapshot of the page: title, url, visible
-buttons, links, and textboxes. Call this after any action to
-see what changed, instead of requesting full HTML.
-
-Args:
-    tab_id: Target a specific tab instead of the active one.
-
-Returns:
-    Dictionary with url, title, buttons, links, textboxes.
-    Required Arguments:
-      • tab_id : Optional [Optional]
+  Get a compact snapshot of the page: title, url, visible
 
 • press_enter(tab_id)
-    Description : Press the Enter key on the active element.
-
-Args:
-    tab_id: Target a specific tab instead of the active one.
-
-Returns:
-    Dictionary with success, url, and title.
-    Required Arguments:
-      • tab_id : Optional [Optional]
+  Press the Enter key on the active element.
 
 • press_escape(tab_id)
-    Description : Press the Escape key on the active element.
-
-Args:
-    tab_id: Target a specific tab instead of the active one.
-
-Returns:
-    Dictionary with success, url, and title.
-    Required Arguments:
-      • tab_id : Optional [Optional]
+  Press the Escape key on the active element.
 
 • reload(tab_id)
-    Description : Reload the current page.
-
-Args:
-    tab_id: Target a specific tab instead of the active one.
-
-Returns:
-    Dictionary with success, url, and title after reload.
-    Required Arguments:
-      • tab_id : Optional [Optional]
+  Reload the current page.
 
 • screenshot(path, tab_id)
-    Description : Take a screenshot of the page and save it to disk.
-
-Args:
-    path: File path to save the screenshot to.
-    tab_id: Target a specific tab instead of the active one.
-
-Returns:
-    The file path the screenshot was saved to.
-    Required Arguments:
-      • path : str [Optional] (default=screenshot.png)
-      • tab_id : Optional [Optional]
+  Take a screenshot of the page and save it to disk.
 
 • scroll(direction, amount, tab_id)
-    Description : Scroll the page up or down by a pixel amount.
-
-Args:
-    direction: "down" or "up".
-    amount: Pixels to scroll.
-    tab_id: Target a specific tab instead of the active one.
-
-Returns:
-    Dictionary with success, url, and title.
-    Required Arguments:
-      • direction : str [Optional] (default=down)
-      • amount : int [Optional] (default=800)
-      • tab_id : Optional [Optional]
+  Scroll the page up or down by a pixel amount.
 
 • search(query, textbox_name, tab_id)
-    Description : Fill the page's search box with a query and press Enter.
-
-Args:
-    query: Search text to submit.
-    textbox_name: Optional explicit name of the search box, if
-        the page has more than one textbox.
-    tab_id: Target a specific tab instead of the active one.
-
-Returns:
-    Dictionary with success, url, and title after searching.
-    Required Arguments:
-      • query : str [Required]
-      • textbox_name : Optional [Optional]
-      • tab_id : Optional [Optional]
+  Fill the page's search box with a query and press Enter.
 
 • switch_tab(tab_id)
-    Description : Make a given tab the active tab. Only needed if you're not
-passing tab_id explicitly to other actions.
-
-Args:
-    tab_id: The tab to switch to.
-
-Returns:
-    Dictionary with success, url, and title of the switched-to tab.
-    Required Arguments:
-      • tab_id : str [Required]
+  Make a given tab the active tab. Only needed if you're not
 
 
-======================================================================
-Tool : file
-======================================================================
+============================================================
+TOOL: file
+============================================================
 
-Purpose
--------
-Tools for managing local files and directories.
-
-All paths may be absolute or relative to the current working directory.
+Purpose: Tools for managing local files and directories.
 
 Available Actions
 -----------------
 • append_file(file_name, content)
-    Description : Append data to a file.
-
-Creates the file if it does not exist.
-
-Args:
-    file_name: File path.
-    content: Text (str) or binary (bytes) data.
-
-Returns:
-    Status message.
-    Required Arguments:
-      • file_name : str [Required]
-      • content : Any [Required]
+  Append data to a file.
 
 • copy(source, destination)
-    Description : Copy a file or directory.
-
-Directories are copied recursively.
-
-Args:
-    source: Existing file or directory.
-    destination: Destination path.
-
-Returns:
-    Status message.
-    Required Arguments:
-      • source : str [Required]
-      • destination : str [Required]
+  Copy a file or directory.
 
 • create_directory(path, name)
-    Description : Create a directory.
-
-Parent directories are created automatically.
-
-Args:
-    path: Parent directory.
-    name: Name of the new directory.
-
-Returns:
-    Status message.
-    Required Arguments:
-      • path : str [Required]
-      • name : str [Required]
+  Create a directory.
 
 • create_file(file_name)
-    Description : Create an empty file.
-
-Parent directories are created automatically.
-
-Args:
-    file_name: File path to create.
-
-Returns:
-    Status message.
-    Required Arguments:
-      • file_name : str [Required]
+  Create an empty file.
 
 • delete_directory(path)
-    Description : Delete a directory recursively.
-
-Args:
-    path: Directory path.
-
-Returns:
-    Status message.
-    Required Arguments:
-      • path : str [Required]
+  Delete a directory recursively.
 
 • delete_file(file_name)
-    Description : Delete a file.
-
-Args:
-    file_name: File path.
-
-Returns:
-    Status message.
-    Required Arguments:
-      • file_name : str [Required]
+  Delete a file.
 
 • exists(path)
-    Description : Check whether a file or directory exists.
-
-Args:
-    path: File or directory path.
-
-Returns:
-    True if the path exists, otherwise False.
-    Required Arguments:
-      • path : str [Required]
+  Check whether a file or directory exists.
 
 • get_metadata(path)
-    Description : Get filesystem metadata.
-
-Args:
-    path: File or directory path.
-
-Returns:
-    Dictionary containing metadata.
-    Required Arguments:
-      • path : str [Required]
+  Get filesystem metadata.
 
 • list_directories(path)
-    Description : List immediate subdirectories.
-
-Args:
-    path: Parent directory.
-
-Returns:
-    List of directory paths.
-    Required Arguments:
-      • path : str [Required]
+  List immediate subdirectories.
 
 • move(source, destination)
-    Description : Move a file or directory.
-
-Args:
-    source: Existing file or directory.
-    destination: Destination path.
-
-Returns:
-    Status message.
-    Required Arguments:
-      • source : str [Required]
-      • destination : str [Required]
+  Move a file or directory.
 
 • open_directory(path)
-    Description : Open a directory in the system file explorer.
-
-Args:
-    path: Directory path.
-
-Returns:
-    Status message.
-    Required Arguments:
-      • path : str [Required]
+  Open a directory in the system file explorer.
 
 • open_file(path)
-    Description : Open a file using the system's default application.
-
-Args:
-    path: File path.
-
-Returns:
-    Status message.
-    Required Arguments:
-      • path : str [Required]
+  Open a file using the system's default application.
 
 • read_file(file_name)
-    Description : Read a file.
-
-Returns text for UTF-8 files, otherwise returns raw bytes.
-
-Args:
-    file_name: File path.
-
-Returns:
-    str | bytes: File contents.
-    Required Arguments:
-      • file_name : str [Required]
+  Read a file.
 
 • rename(path, new_name)
-    Description : Rename a file or directory.
-
-Args:
-    path: Existing file or directory.
-    new_name: New name only.
-
-Returns:
-    Status message.
-    Required Arguments:
-      • path : str [Required]
-      • new_name : str [Required]
+  Rename a file or directory.
 
 • search(path, pattern)
-    Description : Recursively search using a glob pattern.
-
-Examples:
-    *.py
-    *.txt
-    *
-
-Args:
-    path: Root directory.
-    pattern: Glob pattern.
-
-Returns:
-    List of matching paths.
-    Required Arguments:
-      • path : str [Required]
-      • pattern : str [Optional] (default=*)
+  Recursively search using a glob pattern.
 
 • write_file(file_name, content)
-    Description : Overwrite a file.
-
-Creates the file if it does not exist.
-
-Args:
-    file_name: Destination file path.
-    content: Text (str) or binary (bytes) data.
-
-Returns:
-    Status message.
-    Required Arguments:
-      • file_name : str [Required]
-      • content : Any [Required]
+  Overwrite a file.
 
 
-======================================================================
-Tool : network
-======================================================================
+============================================================
+TOOL: network
+============================================================
 
-Purpose
--------
-Tool for managing and inspecting Windows network state.
-
-Provides methods to control Wi-Fi, inspect local and public IP
-addresses, test connectivity, resolve DNS, and enumerate network
-adapters.
+Purpose: Tool for managing and inspecting Windows network state.
 
 Available Actions
 -----------------
 • adapters()
-    Description : Enumerate network adapters and their addresses/status.
-
-Returns:
-    Dictionary mapping adapter name to a list of address
-    entries (family, address, netmask, is_up).
-    Required Arguments : None
+  Enumerate network adapters and their addresses/status.
 
 • available_wifi()
-    Description : Scan for nearby Wi-Fi networks.
-
-Returns:
-    List of dictionaries. Each dictionary contains:
-        ssid: Network name.
-        authentication: Authentication method.
-        encryption: Encryption type.
-        signal: Signal strength percentage.
-        radio: Wi-Fi standard/radio type.
-        channel: Operating channel.
-        bssid: List of access point MAC addresses.
-
-Raises:
-    RuntimeError: If the scan command fails.
-    Required Arguments : None
+  Scan for nearby Wi-Fi networks.
 
 • connect_wifi(ssid, profile)
-    Description : Connect to a Wi-Fi network using a saved profile.
-
-Args:
-    ssid: Name of the Wi-Fi network to connect to.
-    profile: Profile name to use, if different from the SSID.
-
-Returns:
-    Status message.
-
-Raises:
-    RuntimeError: If the connect command fails.
-    Required Arguments:
-      • ssid : str [Required]
-      • profile : Optional [Optional]
+  Connect to a Wi-Fi network using a saved profile.
 
 • disconnect_wifi(interface)
-    Description : Disconnect from the current Wi-Fi network.
-
-Args:
-    interface: Name of the wireless network interface.
-
-Returns:
-    Status message.
-
-Raises:
-    RuntimeError: If the disconnect command fails.
-    Required Arguments:
-      • interface : str [Optional] (default=Wi-Fi)
+  Disconnect from the current Wi-Fi network.
 
 • dns_lookup(hostname)
-    Description : Resolve a hostname to an IP address.
-
-Args:
-    hostname: The hostname to resolve.
-
-Returns:
-    The resolved IP address.
-
-Raises:
-    RuntimeError: If the hostname could not be resolved.
-    Required Arguments:
-      • hostname : str [Required]
+  Resolve a hostname to an IP address.
 
 • internet_available(timeout)
-    Description : Check whether an internet connection is currently available.
-
-Args:
-    timeout: Connection timeout in seconds.
-
-Returns:
-    True if internet is reachable, False otherwise.
-    Required Arguments:
-      • timeout : float [Optional] (default=3.0)
+  Check whether an internet connection is currently available.
 
 • ip()
-    Description : Get the local machine's hostname and private IP address.
-
-Returns:
-    Dictionary containing:
-        hostname: The machine's network hostname.
-        local_ip: The primary local IP address.
-    Required Arguments : None
+  Get the local machine's hostname and private IP address.
 
 • ping(host, count)
-    Description : Ping a host to test reachability and latency.
-
-Args:
-    host: Hostname or IP address to ping.
-    count: Number of echo requests to send.
-
-Returns:
-    Dictionary containing:
-        host: The target host.
-        success: Whether the host responded.
-        output: Raw command output.
-    Required Arguments:
-      • host : str [Optional] (default=8.8.8.8)
-      • count : int [Optional] (default=4)
+  Ping a host to test reachability and latency.
 
 • public_ip(timeout)
-    Description : Get the machine's public-facing IP address.
-
-Args:
-    timeout: Request timeout in seconds.
-
-Returns:
-    The public IP address as a string.
-
-Raises:
-    RuntimeError: If the public IP could not be determined.
-    Required Arguments:
-      • timeout : float [Optional] (default=5.0)
+  Get the machine's public-facing IP address.
 
 • saved_wifi_profiles()
-    Description : Return all saved Wi-Fi profiles.
-
-Returns:
-    List of saved profile names.
-
-Raises:
-    RuntimeError: If the command fails.
-    Required Arguments : None
+  Return all saved Wi-Fi profiles.
 
 • wifi_off(interface)
-    Description : Disable the Wi-Fi network adapter.
-
-Args:
-    interface: Name of the wireless network interface.
-
-Returns:
-    Status message.
-
-Raises:
-    PermissionError: If not running with administrator privileges.
-    RuntimeError: If the command fails.
-    Required Arguments:
-      • interface : str [Optional] (default=Wi-Fi)
+  Disable the Wi-Fi network adapter.
 
 • wifi_on(interface)
-    Description : Enable the Wi-Fi network adapter.
-
-Args:
-    interface: Name of the wireless network interface.
-
-Returns:
-    Status message.
-
-Raises:
-    PermissionError: If not running with administrator privileges.
-    RuntimeError: If the command fails.
-    Required Arguments:
-      • interface : str [Optional] (default=Wi-Fi)
+  Enable the Wi-Fi network adapter.
 
 

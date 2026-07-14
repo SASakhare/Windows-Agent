@@ -4,7 +4,7 @@ from src.agent.tools.registry import ToolRegistry
 
 class ToolFormatter(BaseFormatter):
     """
-    Converts ToolRegistry into LLM-friendly documentation.
+    Converts ToolRegistry into compact planner documentation.
     """
 
     def format(  # type: ignore
@@ -18,79 +18,40 @@ class ToolFormatter(BaseFormatter):
 
         for tool_name, schema in schemas.items():
 
-            sections.append("=" * 70)
-            sections.append(f"Tool : {tool_name}")
-            sections.append("=" * 70)
+            sections.append("=" * 60)
+            sections.append(f"TOOL: {tool_name}")
+            sections.append("=" * 60)
 
             description = (
-                schema.get("description", "").strip()
-                or "No description available."
+                schema.get("description", "").strip().split("\n")[0]
             )
 
             sections.append("")
-            sections.append("Purpose")
-            sections.append("-------")
-            sections.append(description)
+            sections.append(f"Purpose: {description}")
             sections.append("")
-
             sections.append("Available Actions")
             sections.append("-----------------")
 
             for action in schema["actions"]:
 
-                action_name = action["name"]
+                params = ", ".join(action["parameters"].keys())
 
-                params = action["parameters"]
-
-                signature = ", ".join(params.keys())
-
-                sections.append(f"• {action_name}({signature})")
-
-                action_description = (
-                    action.get("description", "").strip()
+                signature = (
+                    f"{action['name']}({params})"
+                    if params
+                    else f"{action['name']}()"
                 )
 
-                if action_description:
-                    sections.append(
-                        f"    Description : {action_description}"
-                    )
+                sections.append(f"• {signature}")
 
-                if params:
+                desc = (
+                    action.get("description", "")
+                    .strip()
+                    .split("\n")[0]
+                )
 
-                    sections.append(
-                        "    Required Arguments:"
-                    )
-
-                    for name, info in params.items():
-
-                        required = (
-                            "Required"
-                            if info["required"]
-                            else "Optional"
-                        )
-
-                        default = ""
-
-                        if (
-                            not info["required"]
-                            and info["default"] is not None
-                        ):
-                            default = (
-                                f" (default={info['default']})"
-                            )
-
-                        sections.append(
-                            f"      • {name}"
-                            f" : {info['type']}"
-                            f" [{required}]"
-                            f"{default}"
-                        )
-
-                else:
-
-                    sections.append(
-                        "    Required Arguments : None"
-                    )
+                if desc:
+                    sections.append(f"  {desc}")
 
                 sections.append("")
 

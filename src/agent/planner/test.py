@@ -47,4 +47,7 @@ planner = Planner(
 result = planner.plan()
 
 
+# with open("planner_plan.txt",'w',encoding='utf-8') as file:
+#     file.write(result) # type: ignore
+
 print(result)
