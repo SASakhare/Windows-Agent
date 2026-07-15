@@ -81,6 +81,10 @@ class EventTypes(Enum):
 
     TOOL_FAILED = "tool_failed"
 
+    ACTION_EXECUTED="action_executed"
+
+    ACTION_FAILED="action_failed"
+
     
     #^ ==========================================================
     #^ Observation

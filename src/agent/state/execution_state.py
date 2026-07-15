@@ -43,6 +43,8 @@ class ExecutionState:
 
     retry_count:int=0
 
+    execution_time:float=0.0
+
 
 
 

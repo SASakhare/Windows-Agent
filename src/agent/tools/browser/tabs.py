@@ -10,6 +10,7 @@ class Tabs:
     def new_tab(self, url: str = "about:blank", make_active: bool = True) -> Dict[str, Any]:
         context = self._manager.current_context
         page = context.new_page()
+        url=self._normalize_url(url)
         page.goto(url)
         tab_id = self._manager.register_new_tab(page)
         if make_active:
@@ -29,3 +30,10 @@ class Tabs:
             {"tab_id": tid, "url": p.url, "title": p.title()}
             for tid, p in self._manager.list_tabs().items()
         ]
+    
+    def _normalize_url(self,url: str) -> str:
+
+        if not url.startswith(("http://", "https://")):
+            url = "https://" + url
+
+        return url

@@ -102,7 +102,18 @@ class BrowserTool(BaseTool):
         Returns:
             Dictionary with success, url, and title after navigation.
         """
+        tab_id=None
+        url=self._normalize_url(url)
+
         return self.navigation.goto(url, tab_id=tab_id) 
+    
+
+    def _normalize_url(self,url: str) -> str:
+
+        if not url.startswith(("http://", "https://")):
+            url = "https://" + url
+
+        return url
 
     def back(self, tab_id: Optional[str] = None) -> Dict[str, Any]:
         """Go back one page in browser history.
@@ -323,10 +334,10 @@ class BrowserTool(BaseTool):
 import time
 
 
-if __name__ == "__main__":
-    tool = BrowserTool()
-    tool.execute("goto", url="https://google.com")
-    print(tool.execute("page_state"))
+# if __name__ == "__main__":
+#     tool = BrowserTool()
+#     tool.execute("goto", url="https://google.com")
+#     print(tool.execute("page_state"))
 
-    time.sleep(30)
-    tool.execute("close")
+#     time.sleep(30)
+#     tool.execute("close")

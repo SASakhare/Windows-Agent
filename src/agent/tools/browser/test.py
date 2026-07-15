@@ -73,8 +73,8 @@ def main():
     run(tool, "list_tabs" if False else "tabs")  # sanity check open tabs
     run(tool, "screenshot", path="amazon_earphones.png", tab_id=amazon_tab)
 
-    input("\nPress Enter to close browser...")
-    run(tool, "close")
+    # input("\nPress Enter to close browser...")
+    # run(tool, "close")
 
 
 if __name__ == "__main__":
