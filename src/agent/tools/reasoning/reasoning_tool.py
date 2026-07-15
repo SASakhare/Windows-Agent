@@ -1,7 +1,9 @@
-# tools/reasoning/reasoning_tool.py
 import os
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
+from src.agent.llm.base_llm import BaseLLM
+from src.agent.llm.llm_config import LLMConfig
+from src.agent.llm.llm_factory import LLMFactory
 from src.agent.tools.base_tool import BaseTool
 from .prompts import build_prompt
 
@@ -13,12 +15,16 @@ class ReasoningTool(BaseTool):
     call, not by any external system.
     """
 
-    def __init__(self, model: str = "claude-sonnet-4-6") -> None:
-        api_key = os.environ.get("ANTHROPIC_API_KEY")
-        if not api_key:
-            raise RuntimeError("ANTHROPIC_API_KEY environment variable is not set.")
-        self._client = None
-        self._model = model
+    def __init__(self) -> None:
+        llm=LLMFactory.create(
+            LLMConfig(
+
+            provider="ollama",
+
+            model_name="qwen3:14b",
+            )
+        )
+        self._llm:BaseLLM=llm
 
     @property
     def name(self) -> str:
@@ -37,7 +43,7 @@ class ReasoningTool(BaseTool):
             "rewrite": self.rewrite,
             "proofread": self.proofread,
             "brainstorm": self.brainstorm,
-            "plan": self.plan,
+            # "plan": self.plan,
             "extract": self.extract,
             "analyze": self.analyze,
             "compare": self.compare,
@@ -63,14 +69,10 @@ class ReasoningTool(BaseTool):
     # Core LLM call — shared by every method below
     # ==========================================================
 
-    def _call(self, prompt: str, max_tokens: int = 1024) -> str:
-        response = self._client.messages.create(
-            model=self._model,
-            max_tokens=max_tokens,
-            messages=[{"role": "user", "content": prompt}],
-        )
-        return "".join(block.text for block in response.content if block.type == "text")
+    def _call(self, prompt: str,) -> str:
 
+        return self._llm.generate(prompt).content
+    
     # ==========================================================
     # Question answering / explanation
     # ==========================================================
@@ -168,16 +170,16 @@ class ReasoningTool(BaseTool):
         """
         return self._call(build_prompt("brainstorm", prompt=topic, count=count))
 
-    def plan(self, goal: str) -> str:
-        """Create a step-by-step plan for a goal.
+    # def plan(self, goal: str) -> str:
+    #     """Create a step-by-step plan for a goal.
 
-        Args:
-            goal: The goal to plan for.
+    #     Args:
+    #         goal: The goal to plan for.
 
-        Returns:
-            A step-by-step plan as text.
-        """
-        return self._call(build_prompt("plan", prompt=goal))
+    #     Returns:
+    #         A step-by-step plan as text.
+    #     """
+    #     return self._call(build_prompt("plan", prompt=goal))
 
     # ==========================================================
     # Extraction / analysis
@@ -304,6 +306,8 @@ class ReasoningTool(BaseTool):
         return self._call(prompt)
 
 if __name__ == "__main__":
+
     tool = ReasoningTool()
+
     print(tool.execute("answer", question="What is a BLE GATT service?"))
-    print(tool.execute("plan", goal="Migrate a Flask app to FastAPI"))
+    # print(tool.execute("plan", goal="Migrate a Flask app to FastAPI"))
