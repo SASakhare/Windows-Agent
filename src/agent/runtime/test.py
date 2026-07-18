@@ -50,6 +50,12 @@ def main():
     print("=" * 100)
     print(state.reflection)
 
+    print("\n")
+    print("=" * 100)
+    print("recovery STATE")
+    print("=" * 100)
+    print(state.recovery)
+
 
 if __name__ == "__main__":
     main()
