@@ -7,7 +7,10 @@ from src.agent.planner.planner_output import PlannerOutput
 from src.agent.planner.planner_prompt import PlannerPrompt
 from src.agent.prompts.builder.planner_prompt_builder import PlannerPromptBuilder
 from src.agent.prompts.formatter.conversation_formatter import ConversationFormatter
+from src.agent.prompts.formatter.execution_formatter import ExecutionFormatter
 from src.agent.prompts.formatter.planning_formatter import PlanningFormatter
+from src.agent.prompts.formatter.recovery_formatter import RecoveryFormatter
+from src.agent.prompts.formatter.reflection_formatter import ReflectionFormatter
 from src.agent.prompts.formatter.tool_formatter import ToolFormatter
 from src.agent.prompts.formatter.word_formatter import WorldFormatter
 from src.agent.state.agent_state import AgentState
@@ -46,6 +49,9 @@ class Planner:
             conversation_formatter=ConversationFormatter(),
             planning_formatter=PlanningFormatter(),
             world_formatter=WorldFormatter(),
+            execution_formatter=ExecutionFormatter(),
+            reflection_formatter=ReflectionFormatter(),
+            recovery_formatter=RecoveryFormatter(),
         )
 
         self._validator = ActionValidator(tool_registry)
@@ -66,10 +72,8 @@ class Planner:
         # self._validate(result)
         # with open('prompt_file_from_planner.txt','w',encoding='utf-8') as file:
         #     file.write(prompt)
-            
 
         # print("Prompt file Saving Completed.")
-
 
         self._update_state(result)
 

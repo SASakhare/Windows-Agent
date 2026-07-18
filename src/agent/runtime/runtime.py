@@ -3,6 +3,7 @@ from src.agent.runtime.runtime_state import RuntimeState
 from src.agent.runtime.runtime_context import RuntimeContext
 from src.agent.runtime.runtime_config import RuntimeConfig
 
+from src.agent.runtime.runtime_trace import RuntimeTracer
 
 class AgentRuntime:
 
@@ -28,6 +29,8 @@ class AgentRuntime:
 
         self._runtime = RuntimeState()
 
+        self._tracer=RuntimeTracer()
+
     @property
     def pipeline(self):
 
@@ -35,6 +38,8 @@ class AgentRuntime:
     
 
     def run(self):
+
+        self._tracer.start_run()
 
         self._runtime.running = True
 
@@ -52,12 +57,56 @@ class AgentRuntime:
 
                 self._runtime.current_stage = stage.name
 
+                self._tracer.iteration(self._runtime.iteration)
+                
                 stage.execute(
                     self._context
                 )
 
+                print("\n")
+                print("=" * 100)
+                print(f"{stage.name}")
+                print("=" * 100)
+                
+                match stage.name:
+
+                    case "Planning":
+                        self._tracer.stage(
+                            "Planning",
+                            self._context.state.planning,
+                        )
+
+                    case "Execution":
+                        self._tracer.stage(
+                            "Execution",
+                            self._context.state.execution,
+                        )
+
+                    case "Observation":
+                        self._tracer.stage(
+                            "Observation",
+                            self._context.observation_result,
+                        )
+
+                        self._tracer.stage(
+                            "World State",
+                            self._context.state.world,
+                        )
+
+                    case "Reflection":
+                        self._tracer.stage(
+                            "Reflection",
+                            self._context.reflection,
+                        )
+
+                    case "Recovery":
+                        self._tracer.stage(
+                            "Recovery",
+                            self._context.recovery,
+                        )
+
             if (
-                self._context.state.goal.status
+                self._context.state.planning.goal_completed
             ):
                 break
 

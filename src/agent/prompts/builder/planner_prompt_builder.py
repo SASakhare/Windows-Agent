@@ -11,45 +11,58 @@ class PlannerPromptBuilder(BasePromptBuilder):
         tool_formatter,
         conversation_formatter,
         planning_formatter,
+        execution_formatter,
         world_formatter,
-    ):
+        reflection_formatter,
+        recovery_formatter,
+    ) -> None:
 
         self.tool_formatter = tool_formatter
-
         self.conversation_formatter = conversation_formatter
-
         self.planning_formatter = planning_formatter
-
+        self.execution_formatter = execution_formatter
         self.world_formatter = world_formatter
+        self.reflection_formatter = reflection_formatter
+        self.recovery_formatter = recovery_formatter
 
-    def build(  # type: ignore
+    def build( # type: ignore
         self,
         state: AgentState,
         tool_registry: ToolRegistry,
     ) -> str:
 
-        goal = f"""
+        sections = [
+            SYSTEM_PROMPT,
+
+            f"""
 ============================================================
 USER GOAL
 ============================================================
 
 {state.goal.user_goal}
-"""
+""",
 
-        planning = self.planning_formatter.format(state.planning)
-
-        conversation = f"""
+            f"""
 ============================================================
-CONVERSATION
+CURRENT PLAN
 ============================================================
 
-The conversation history helps identify the user's intent,
-previous clarifications, and preferences.
+This is the planner's previous reasoning and selected action.
 
-{self.conversation_formatter.format(state.conversation)}
-"""
+{self.planning_formatter.format(state.planning)}
+""",
 
-        world = f"""
+            f"""
+============================================================
+LAST EXECUTION
+============================================================
+
+This is the result of the previously executed action.
+
+{self.execution_formatter.format(state.execution)}
+""",
+
+            f"""
 ============================================================
 WORLD STATE
 ============================================================
@@ -57,31 +70,61 @@ WORLD STATE
 The World State represents the agent's current understanding
 of the environment.
 
-Use it to avoid unnecessary or repeated actions.
+Always reason using this information before selecting the next
+action. Do not repeat actions that have already succeeded.
 
 {self.world_formatter.format(state.world)}
-    """
+""",
 
-        tools = f"""
+            f"""
+============================================================
+LAST REFLECTION
+============================================================
+
+Reflection summarizes whether meaningful progress was made
+towards the user's goal and identifies remaining work.
+
+{self.reflection_formatter.format()}
+""",
+
+            f"""
+============================================================
+LAST RECOVERY
+============================================================
+
+Recovery summarizes the strategy selected after the previous
+iteration (continue, retry, replan, ask user, abort, etc.).
+
+Use this information when deciding the next action.
+
+{self.recovery_formatter.format()}
+""",
+
+            f"""
+============================================================
+CONVERSATION
+============================================================
+
+The conversation history provides the user's intent,
+clarifications, and preferences.
+
+{self.conversation_formatter.format(state.conversation)}
+""",
+
+            f"""
 ============================================================
 AVAILABLE TOOLS
 ============================================================
 
 Only use the tools listed below.
 
-Each tool contains its purpose, available actions,
-and required arguments.
+Each tool contains:
+- Purpose
+- Available actions
+- Required arguments
 
 {self.tool_formatter.format(tool_registry)}
 """
+        ]
 
-        return "\n\n".join(
-            [
-                SYSTEM_PROMPT,
-                goal,
-                planning,
-                conversation,
-                world,
-                tools,
-            ]
-        )
+        return "\n\n".join(sections)
