@@ -44,6 +44,12 @@ def main():
     print("=" * 100)
     print(state.world)
 
+    print("\n")
+    print("=" * 100)
+    print("reflection STATE")
+    print("=" * 100)
+    print(state.reflection)
+
 
 if __name__ == "__main__":
     main()

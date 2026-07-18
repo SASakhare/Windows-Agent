@@ -19,6 +19,7 @@ from src.agent.reflection.reflection import Reflection
 from src.agent.reflection.reflection_config import ReflectionConfig
 from src.agent.reflection.reflection_validator import ReflectionValidator
 from src.agent.runtime.observation_stage import ObservationStage
+from src.agent.runtime.reflection_stage import ReflectionStage
 from src.agent.runtime.runtime import AgentRuntime
 from src.agent.runtime.runtime_context import RuntimeContext
 
@@ -187,4 +188,6 @@ def build_runtime() -> AgentRuntime:
 
     runtime.pipeline.add_stage(ObservationStage())
 
+    runtime.pipeline.add_stage(ReflectionStage())
+    
     return runtime
