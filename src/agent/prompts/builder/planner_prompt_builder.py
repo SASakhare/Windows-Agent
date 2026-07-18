@@ -84,7 +84,7 @@ LAST REFLECTION
 Reflection summarizes whether meaningful progress was made
 towards the user's goal and identifies remaining work.
 
-{self.reflection_formatter.format()}
+{self.reflection_formatter.format(state.reflection)}
 """,
 
             f"""
@@ -97,7 +97,7 @@ iteration (continue, retry, replan, ask user, abort, etc.).
 
 Use this information when deciding the next action.
 
-{self.recovery_formatter.format()}
+{self.recovery_formatter.format(state.recovery)}
 """,
 
             f"""
