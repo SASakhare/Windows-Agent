@@ -88,7 +88,7 @@ tool_registry.register(NetworkTool)
 
 state = AgentState()
 
-state.goal.user_goal = "Open google.com"
+state.goal.user_goal = "Open google.com and scroll for 1 min"
 
 state.conversation.conversation_history.append(
     Message(
