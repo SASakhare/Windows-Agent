@@ -62,6 +62,15 @@ from src.agent.prompts.formatter.planning_formatter import (
 )
 from src.agent.prompts.formatter.word_formatter import WorldFormatter
 
+from src.agent.prompts.builder.reasoner_prompt_builder import ReasonerPromptBuilder
+from src.agent.prompts.formatter.reasoner_formatter import ReasonerFormatter
+from src.agent.state.reasoner_state import ReasonerState
+from src.agent.reasoner.reasoner import Reasoner
+from src.agent.reasoner.reasoner_config import ReasonerConfig
+from src.agent.reasoner.reasoner_output import ReasonerOutput
+from src.agent.reasoner.reasoner_validator import ReasonerValidator
+from src.agent.runtime.runtime_stages.reasoner_stage import ReasonerStage
+
 
 def build_runtime() -> AgentRuntime:
 
@@ -87,10 +96,28 @@ def build_runtime() -> AgentRuntime:
         )
     )
 
-    #^ --------------------------------------------------
-    #^ Core Components
-    #^ --------------------------------------------------
+    # ^ --------------------------------------------------
+    # ^ Core Components
+    # ^ --------------------------------------------------
 
+    # *---------------------- Reasoner ------------------------------
+
+    reasoner_prompt_builder = ReasonerPromptBuilder(
+        conversation_formatter=ConversationFormatter(),
+        planning_formatter=PlanningFormatter(),
+        execution_formatter=ExecutionFormatter(),
+        world_formatter=WorldFormatter(),
+        reasoner_formatter=ReasonerFormatter(),
+        recovery_formatter=ReasonerFormatter(),
+        reflection_formatter=ReflectionFormatter(),
+    )
+
+    reasoner = Reasoner(
+        llm=llm,
+        prompt_builder=reasoner_prompt_builder,
+        validator=ReasonerValidator(),
+        config=ReasonerConfig(),
+    )
     # *---------------------- Planner ------------------------------
     planner = Planner(
         llm=llm,
@@ -106,7 +133,6 @@ def build_runtime() -> AgentRuntime:
         event_bus=event_bus,
         validator=ExecutionValidator(tool_registry=registry),
     )
-
 
     # *------------------- Observer --------------------------------
     observer_prompt_builder = ObserverPromptBuilder(
@@ -164,9 +190,9 @@ def build_runtime() -> AgentRuntime:
         config=RecoveryConfig(),
     )
 
-    #^ --------------------------------------------------
-    #^ Runtime Context
-    #^ --------------------------------------------------
+    # ^ --------------------------------------------------
+    # ^ Runtime Context
+    # ^ --------------------------------------------------
 
     context = RuntimeContext(
         state=state,
@@ -176,12 +202,15 @@ def build_runtime() -> AgentRuntime:
         reflection=reflection,
         recovery=recovery,
         event_bus=event_bus,
+        reasoner=reasoner,
     )
-    #^ --------------------------------------------------
-    #^ Runtime
-    #^ --------------------------------------------------
+    # ^ --------------------------------------------------
+    # ^ Runtime
+    # ^ --------------------------------------------------
 
     runtime = AgentRuntime(context)
+
+    runtime.pipeline.add_stage(ReasonerStage())
 
     runtime.pipeline.add_stage(PlanningStage())
 

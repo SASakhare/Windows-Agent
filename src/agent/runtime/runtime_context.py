@@ -56,7 +56,7 @@ class RuntimeContext:
     # Runtime Outputs
     # ==========================================================
 
-    reasoner_output:ReasonerOutput
+    reasoner_output:ReasonerOutput | None= None
 
     planner_output: PlannerOutput | None = None
 
