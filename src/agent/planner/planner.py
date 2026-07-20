@@ -15,6 +15,7 @@ from src.agent.prompts.formatter.tool_formatter import ToolFormatter
 from src.agent.prompts.formatter.word_formatter import WorldFormatter
 from src.agent.state.agent_state import AgentState
 from src.agent.tools.registry import ToolRegistry
+from src.agent.prompts.formatter.reasoner_formatter import ReasonerFormatter
 
 
 class Planner:
@@ -45,13 +46,12 @@ class Planner:
         self._event_bus = event_bus
 
         self._prompt_builder = PlannerPromptBuilder(
+            reasoner_formatter=ReasonerFormatter(),
             tool_formatter=ToolFormatter(),
             conversation_formatter=ConversationFormatter(),
             planning_formatter=PlanningFormatter(),
             world_formatter=WorldFormatter(),
             execution_formatter=ExecutionFormatter(),
-            reflection_formatter=ReflectionFormatter(),
-            recovery_formatter=RecoveryFormatter(),
         )
 
         self._validator = ActionValidator(tool_registry)

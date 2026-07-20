@@ -10,28 +10,27 @@ class PlannerPromptBuilder(BasePromptBuilder):
         self,
         tool_formatter,
         conversation_formatter,
+        reasoner_formatter,
         planning_formatter,
         execution_formatter,
         world_formatter,
-        reflection_formatter,
-        recovery_formatter,
     ) -> None:
 
         self.tool_formatter = tool_formatter
         self.conversation_formatter = conversation_formatter
+        self.reasoner_formatter = reasoner_formatter
         self.planning_formatter = planning_formatter
         self.execution_formatter = execution_formatter
         self.world_formatter = world_formatter
-        self.reflection_formatter = reflection_formatter
-        self.recovery_formatter = recovery_formatter
 
-    def build( # type: ignore
+    def build(  # type: ignore
         self,
         state: AgentState,
         tool_registry: ToolRegistry,
     ) -> str:
 
         sections = [
+
             SYSTEM_PROMPT,
 
             f"""
@@ -44,10 +43,26 @@ USER GOAL
 
             f"""
 ============================================================
+REASONER GUIDANCE
+============================================================
+
+The Reasoner has already analyzed the user's objective,
+the current environment, previous progress,
+and determined the overall strategy.
+
+Follow this guidance when selecting the next action.
+
+{self.reasoner_formatter.format(state.reasoner)}
+""",
+
+            f"""
+============================================================
 CURRENT PLAN
 ============================================================
 
-This is the planner's previous reasoning and selected action.
+This is the planner's previous action.
+
+Avoid repeating actions that have already succeeded.
 
 {self.planning_formatter.format(state.planning)}
 """,
@@ -58,6 +73,8 @@ LAST EXECUTION
 ============================================================
 
 This is the result of the previously executed action.
+
+Use it to determine whether the next action should change.
 
 {self.execution_formatter.format(state.execution)}
 """,
@@ -70,34 +87,11 @@ WORLD STATE
 The World State represents the agent's current understanding
 of the environment.
 
-Always reason using this information before selecting the next
-action. Do not repeat actions that have already succeeded.
+Always use this information before selecting the next action.
+
+Do not repeat successful actions.
 
 {self.world_formatter.format(state.world)}
-""",
-
-            f"""
-============================================================
-LAST REFLECTION
-============================================================
-
-Reflection summarizes whether meaningful progress was made
-towards the user's goal and identifies remaining work.
-
-{self.reflection_formatter.format(state.reflection)}
-""",
-
-            f"""
-============================================================
-LAST RECOVERY
-============================================================
-
-Recovery summarizes the strategy selected after the previous
-iteration (continue, retry, replan, ask user, abort, etc.).
-
-Use this information when deciding the next action.
-
-{self.recovery_formatter.format(state.recovery)}
 """,
 
             f"""
@@ -105,8 +99,8 @@ Use this information when deciding the next action.
 CONVERSATION
 ============================================================
 
-The conversation history provides the user's intent,
-clarifications, and preferences.
+The conversation history may contain references,
+clarifications, or additional user constraints.
 
 {self.conversation_formatter.format(state.conversation)}
 """,
@@ -119,9 +113,15 @@ AVAILABLE TOOLS
 Only use the tools listed below.
 
 Each tool contains:
-- Purpose
-- Available actions
-- Required arguments
+
+• Purpose
+
+• Available Actions
+
+• Required Arguments
+
+Choose the tool that best satisfies the
+Reasoner's guidance.
 
 {self.tool_formatter.format(tool_registry)}
 """
