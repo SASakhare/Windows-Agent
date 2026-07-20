@@ -16,6 +16,8 @@ from src.agent.recovery.models.recovery_result import RecoveryResult
 from src.agent.state.agent_state import AgentState
 from src.agent.tools.tool_result import ToolResult
 
+from src.agent.reasoner.reasoner import Reasoner
+from src.agent.reasoner.reasoner_output import ReasonerOutput
 
 @dataclass(slots=True)
 class RuntimeContext:
@@ -36,6 +38,8 @@ class RuntimeContext:
     # Core Components
     # ==========================================================
 
+    reasoner:Reasoner
+
     planner: Planner
 
     executor: Executor
@@ -51,6 +55,8 @@ class RuntimeContext:
     # ==========================================================
     # Runtime Outputs
     # ==========================================================
+
+    reasoner_output:ReasonerOutput
 
     planner_output: PlannerOutput | None = None
 

@@ -1,4 +1,4 @@
-from src.agent.runtime.runtime_stage import RuntimeStage
+from src.agent.runtime.runtime_stages.runtime_stage import RuntimeStage
 
 
 class RuntimePipeline:

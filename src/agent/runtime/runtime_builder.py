@@ -18,14 +18,14 @@ from src.agent.recovery.recovery_validator import RecoveryValidator
 from src.agent.reflection.reflection import Reflection
 from src.agent.reflection.reflection_config import ReflectionConfig
 from src.agent.reflection.reflection_validator import ReflectionValidator
-from src.agent.runtime.observation_stage import ObservationStage
-from src.agent.runtime.recovery_stage import RecoveryStage
-from src.agent.runtime.reflection_stage import ReflectionStage
+from src.agent.runtime.runtime_stages.observation_stage import ObservationStage
+from src.agent.runtime.runtime_stages.recovery_stage import RecoveryStage
+from src.agent.runtime.runtime_stages.reflection_stage import ReflectionStage
 from src.agent.runtime.runtime import AgentRuntime
 from src.agent.runtime.runtime_context import RuntimeContext
 
-from src.agent.runtime.planning_stage import PlanningStage
-from src.agent.runtime.execution_stage import ExecutionStage
+from src.agent.runtime.runtime_stages.planning_stage import PlanningStage
+from src.agent.runtime.runtime_stages.execution_stage import ExecutionStage
 
 from src.agent.state.agent_state import AgentState
 
