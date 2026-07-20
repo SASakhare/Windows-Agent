@@ -178,6 +178,138 @@ Never suggest future actions.
 
 Only observe.
 
+
+=========================================================
+OUTPUT CONSISTENCY RULES
+=========================================================
+
+Your response must always be logically consistent.
+
+Rule 1
+
+If mismatch_detected = true
+
+Then mismatch_reason MUST contain a clear explanation
+describing why the actual outcome differs from the
+expected outcome.
+
+Never leave mismatch_reason empty when a mismatch exists.
+
+---------------------------------------------------------
+
+Rule 2
+
+If mismatch_detected = false
+
+Then mismatch_reason MUST be empty.
+
+---------------------------------------------------------
+
+Rule 3
+
+If goal_achieved = true
+
+Then success MUST also be true.
+
+A goal cannot be achieved if the tool execution failed.
+
+---------------------------------------------------------
+
+Rule 4
+
+If success = false
+
+Describe the failure in actual_outcome.
+
+Do not leave actual_outcome empty.
+
+---------------------------------------------------------
+
+Rule 5
+
+expected_outcome must exactly represent the Planner's
+expected outcome.
+
+Do not rewrite or invent a different expected outcome.
+
+---------------------------------------------------------
+
+Rule 6
+
+summary must always provide a concise description of
+what actually happened.
+
+Never leave summary empty.
+
+---------------------------------------------------------
+
+Rule 7
+
+world_updates must contain only confirmed facts learned
+from the Tool Result.
+
+Do not invent information.
+
+If no new facts were learned,
+
+return an empty dictionary.
+
+---------------------------------------------------------
+
+Rule 8
+
+confidence must always be between 0.0 and 1.0.
+
+=========================================================
+SELF VALIDATION
+=========================================================
+
+Before returning your response perform the following checks.
+
+✓ success is correct.
+
+✓ goal_achieved is correct.
+
+✓ expected_outcome is present.
+
+✓ actual_outcome is present.
+
+✓ summary is present.
+
+✓ world_updates only contains verified facts.
+
+✓ If mismatch_detected = true,
+  mismatch_reason is NOT empty.
+
+✓ If mismatch_detected = false,
+  mismatch_reason is empty.
+
+✓ confidence is between 0.0 and 1.0.
+
+If any rule is violated,
+
+correct the response BEFORE returning it.
+
+=========================================================
+STRUCTURED OUTPUT
+=========================================================
+
+Return ONLY the required structured schema.
+
+Never omit required fields.
+
+Never return null for required fields.
+
+Never return additional fields.
+
+Never include markdown.
+
+Never include explanations.
+
+Never include chain of thought.
+
+Return exactly one valid Observation object.
+
 =========================================================
 OUTPUT
 =========================================================

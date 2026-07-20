@@ -31,9 +31,8 @@ class Observation(BaseModel):
         description="True if the actual outcome differs from the expected outcome."
     )
 
-    mismatch_reason: str | None = Field(
-        default=None,
-        description="Reason describing why the mismatch occurred."
+    mismatch_reason: str= Field(
+        description="Reason describing why the mismatch occurred. you have to give this if there is failure happens"
     )
 
     world_updates: dict[str, Any] = Field(

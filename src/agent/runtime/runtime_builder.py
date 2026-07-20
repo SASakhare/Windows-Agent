@@ -108,7 +108,7 @@ def build_runtime() -> AgentRuntime:
         execution_formatter=ExecutionFormatter(),
         world_formatter=WorldFormatter(),
         reasoner_formatter=ReasonerFormatter(),
-        recovery_formatter=ReasonerFormatter(),
+        recovery_formatter=RecoveryFormatter(),
         reflection_formatter=ReflectionFormatter(),
     )
 

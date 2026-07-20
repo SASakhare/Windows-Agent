@@ -71,6 +71,11 @@ class AgentRuntime:
 
                 match stage.name:
 
+                    case "Reasoner":
+                        self._tracer.stage(
+                            "Reasoner",
+                            self._context.state.reasoner,
+                        )
                     case "Planning":
                         self._tracer.stage(
                             "Planning",

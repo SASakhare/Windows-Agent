@@ -68,6 +68,8 @@ class Observer:
             schema=Observation,
         ) # type: ignore
 
+        print(observation);
+
         # -----------------------------------------------------
         # Validate
         # -----------------------------------------------------

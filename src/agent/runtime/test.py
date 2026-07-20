@@ -9,12 +9,12 @@ def main():
 
     state = runtime._context.state
 
-    state.goal.user_goal = "Open google.com"
+    state.goal.user_goal = "create file with name of agent.md in WindowsAgent on the Desktop Folder and write file with answer of what is ai agent"
 
     state.conversation.conversation_history.append(
         Message(
             role=MessageRole.USER,
-            content="Open google.com & and scroll for  1 min",
+            content="create file with name of agent.md in WindowsAgent on the Desktop Folder and write file with answer of what is ai agent"
         )
     )
 

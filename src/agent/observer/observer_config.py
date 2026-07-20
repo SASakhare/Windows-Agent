@@ -19,7 +19,7 @@ class ObserverConfig:
     # Validation
     # ---------------------------------------------------------
 
-    validate_observation: bool = True
+    validate_observation: bool = False
 
     strict_validation: bool = True
 

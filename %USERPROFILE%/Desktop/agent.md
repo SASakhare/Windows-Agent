@@ -1,0 +1,1 @@
+An AI agent is a software system that perceives its environment through sensors, processes information, and performs actions to achieve specific goals. It operates autonomously, making decisions based on its programming and environmental inputs.
