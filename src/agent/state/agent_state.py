@@ -7,6 +7,7 @@ from src.agent.state.goal_state import GoalState
 from src.agent.state.memory_state import MemoryState
 from src.agent.state.metadata_state import MetadataState
 from src.agent.state.planning_state import PlanningState
+from src.agent.state.reasoner_state import ReasonerState
 from src.agent.state.recovery_state import RecoveryState
 from src.agent.state.reflection_state import ReflectionState
 from src.agent.state.word_state import WorldState
@@ -30,6 +31,8 @@ class AgentState:
     """
 
     goal: GoalState = field(default_factory=GoalState)
+
+    reasoner:ReasonerState =field(default_factory=ReasonerState)
 
     planning: PlanningState = field(default_factory=PlanningState)
 
