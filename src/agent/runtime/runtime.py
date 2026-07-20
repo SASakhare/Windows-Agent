@@ -46,6 +46,8 @@ class AgentRuntime:
         while self._runtime.running:
 
             self._runtime.iteration += 1
+            
+            self._tracer.iteration(self._runtime.iteration)
 
             if (
                 self._runtime.iteration
@@ -57,17 +59,16 @@ class AgentRuntime:
 
                 self._runtime.current_stage = stage.name
 
-                self._tracer.iteration(self._runtime.iteration)
-                
-                stage.execute(
-                    self._context
-                )
-
                 print("\n")
                 print("=" * 100)
                 print(f"{stage.name}")
                 print("=" * 100)
                 
+                
+                stage.execute(
+                    self._context
+                )
+
                 match stage.name:
 
                     case "Planning":
@@ -96,13 +97,13 @@ class AgentRuntime:
                     case "Reflection":
                         self._tracer.stage(
                             "Reflection",
-                            self._context.reflection,
+                            self._context.state.reflection,
                         )
 
                     case "Recovery":
                         self._tracer.stage(
                             "Recovery",
-                            self._context.recovery,
+                            self._context.state.recovery,
                         )
 
             if (

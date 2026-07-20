@@ -14,7 +14,7 @@ def main():
     state.conversation.conversation_history.append(
         Message(
             role=MessageRole.USER,
-            content="Open google.com",
+            content="Open google.com & and scroll for  1 min",
         )
     )
 
